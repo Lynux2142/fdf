@@ -6,7 +6,7 @@
 /*   By: lguiller <lguiller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/16 17:47:21 by lguiller          #+#    #+#             */
-/*   Updated: 2018/03/15 16:48:08 by lguiller         ###   ########.fr       */
+/*   Updated: 2018/06/07 10:58:48 by lguiller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int				main(int ac, char **av)
 	int		fd;
 
 	if (ac != 2)
-		ft_error("usage: ./fdf [file_name.fdf]", 4);
+		ft_error("usage: ./fdf [file_name.fdf]", 4, ft_putendl);
 	if (!(shape.max_y = (int *)ft_memalloc(sizeof(int)))
 	|| !(shape.max_x = (int *)ft_memalloc(sizeof(int)))
 	|| !(shape.min_y = (int *)ft_memalloc(sizeof(int)))

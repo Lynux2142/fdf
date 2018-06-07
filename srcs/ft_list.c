@@ -6,7 +6,7 @@
 /*   By: lguiller <lguiller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 16:12:23 by lguiller          #+#    #+#             */
-/*   Updated: 2018/03/16 14:56:00 by lguiller         ###   ########.fr       */
+/*   Updated: 2018/06/07 11:00:05 by lguiller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ static void		ft_register(t_shape *shape, int x, int y, char *z_col)
 	data->x = x;
 	data->y = y;
 	if (!tmp)
-		ft_error("error: Not valid file", 3);
+		ft_error("error: Not valid file", 3, ft_puterror);
 	if (!ft_strequ((test_overflow = ft_itoa(ft_atoi(tmp[0]))), tmp[0]))
 	{
 		ft_memdel((void **)&test_overflow);
-		ft_error("error: Overflow", 5);
+		ft_error("error: Overflow", 5, ft_puterror);
 	}
 	ft_memdel((void **)&test_overflow);
 	data->z = ft_atoi(tmp[0]);
