@@ -6,7 +6,7 @@
 #    By: lguiller <lguiller@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/16 12:18:12 by lguiller          #+#    #+#              #
-#    Updated: 2018/06/07 11:13:19 by lguiller         ###   ########.fr        #
+#    Updated: 2018/07/25 19:36:31 by lguiller         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ OBJ				= $(addprefix ./srcs/, $(SRCS:.c=.o))
 FLAGS			= -Wall -Wextra -Werror -O2
 
 ifeq ($(OPE_SYS), Linux)
-	INCLUDES	= -I includes -I libft -I minilibx_X11 -I /usr/include
+	INCLUDES	= -I includes -I libft -I minilibx_x11 -I /usr/include
 	MLX_DIR		= minilibx_x11
 	FRAMEWORK	= -L$(MLX_DIR) -lmlx -L/usr/lib -lXext -lX11 -lm
 else
@@ -58,15 +58,15 @@ _CUT	= "\033[k"
 
 .PHONY: all libft minilibx clean fclean re
 
-all: libft minilibx $(NAME)
+all: $(NAME)
 
 libft:
-	@make -C libft
+	@make -sC libft
 
-minilibx:
-	@make -C $(MLX_DIR)
+minilibx: libft
+	@make -sC $(MLX_DIR)
 
-$(NAME): $(OBJ)
+$(NAME):  minilibx $(OBJ)
 	@gcc $(FLAGS) $(OBJ) $(LIBFT) $(FRAMEWORK) $(MINILIBX) -o $(NAME)
 	@echo $(_GREEN)"Done."$(_END)
 
@@ -77,18 +77,20 @@ $(NAME): $(OBJ)
 	@printf $(_END)
 
 clean:
-	@make -C libft clean
-	@make -C $(MLX_DIR) clean
+	@make -sC libft clean
+	@make -sC $(MLX_DIR) clean
 	@/bin/rm -f $(OBJ)
 
 fclean: clean
-	@make -C libft fclean
+	@make -sC libft fclean
 	@/bin/rm -f $(NAME)
 
-re: fclean all
+re:
+	@$(MAKE) -s fclean
+	@$(MAKE) -s
 
 lynux:
-	@make -C libft lynux
+	@make -sC libft lynux
 
 booh:
-	@make -C libft booh
+	@make -sC libft booh
