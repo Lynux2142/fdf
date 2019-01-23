@@ -2,7 +2,7 @@
 
 ![screenshot](/screen/screen.png?raw=true)
 
-## Telechargement des sources:
+## Telechargement:
 ```
 git clone https://github.com/Lynux2142/fdf.git
 
