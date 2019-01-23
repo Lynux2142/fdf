@@ -30,13 +30,13 @@ git clone https://github.com/Lynux2142/minilibx_x11.git
 
 ## Utilisation:
 
-'=' / '-' / molette souris = augmenter / diminuer le zoom
+* '=' / '-' / molette souris = augmenter / diminuer le zoom
 
-Fleches directionnelles = deplacer la camera
+* Fleches directionnelles = deplacer la camera
 
-'a' / 'd' = pivoter la camera
+* 'a' / 'd' = pivoter la camera
 
-'enter' = activer / desactiver la rotation automatique
+* 'enter' = activer / desactiver la rotation automatique
 
 'shift' = activer / desactiver le changement de la hauteur a la souris
 
