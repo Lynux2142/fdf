@@ -38,8 +38,8 @@ git clone https://github.com/Lynux2142/minilibx_x11.git
 
 * 'enter' = activer / desactiver la rotation automatique
 
-'shift' = activer / desactiver le changement de la hauteur a la souris
+* 'shift' = activer / desactiver le changement de la hauteur a la souris
 
-'space' = reinitialiser la position de la camera
+* 'space' = reinitialiser la position de la camera
 
-'esc' = quitter
+* 'esc' = quitter
