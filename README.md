@@ -16,6 +16,10 @@ sur LINUX
 ```
 git clone https://github.com/Lynux2142/minilibx_x11.git
 ```
+Librairie X11 necessaire
+```
+apt-get install libx11-dev libxext-dev -y
+```
 ## Compilation:
 
 ```cd fdf/```
