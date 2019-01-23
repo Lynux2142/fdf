@@ -42,7 +42,7 @@ apt-get install libx11-dev libxext-dev -y
 
 * 'enter' = activer / desactiver la rotation automatique
 
-* 'shift' = activer / desactiver le changement de la hauteur a la souris
+* 'rigth shift' = activer / desactiver le changement de la hauteur a la souris
 
 * 'space' = reinitialiser la position de la camera
 
