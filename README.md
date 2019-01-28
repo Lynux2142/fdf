@@ -1,6 +1,6 @@
 # fdf
 
-![screenshot](/screens/screen.png?raw=true)
+![screenshot](/screens/42_fdfGIF.gif?raw=true)
 
 ![screenshot](/screens/screen2.png?raw=true)
 
