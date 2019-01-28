@@ -1,6 +1,8 @@
 # fdf
 
-![screenshot](/screen/screen.png?raw=true)
+![screenshot](/screens/screen.png?raw=true)
+
+![screenshot](/screens/screen2.png?raw=true)
 
 ## Telechargement:
 ```
