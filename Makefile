@@ -6,7 +6,7 @@
 #    By: lguiller <lguiller@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/16 12:18:12 by lguiller          #+#    #+#              #
-#    Updated: 2018/09/13 10:35:26 by lguiller         ###   ########.fr        #
+#    Updated: 2019/10/01 10:35:52 by lguiller         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,25 +16,41 @@
 
 OPE_SYS			= $(shell uname)
 NAME			= fdf
-SRCS1			= main.c ft_check_stock.c ft_list.c ft_draw.c \
-				  event_functions.c ft_pixels.c octan_part_one.c \
-				  octan_part_two.c octan_part_three.c octan_part_four.c \
-				  auto_function.c
+
+SRCS1			= main.c
+SRCS1			+= ft_check_stock.c
+SRCS1			+= ft_list.c
+SRCS1			+= ft_draw.c
+SRCS1			+= event_functions.c
+SRCS1			+= ft_pixels.c
+SRCS1			+= octan_part_one.c
+SRCS1			+= octan_part_two.c
+SRCS1			+= octan_part_three.c
+SRCS1			+= octan_part_four.c
+SRCS1			+= auto_function.c
+
 SRCS			= $(addprefix $(SRCS_DIR), $(SRCS1))
 OBJS			= $(addprefix $(OBJS_DIR), $(SRCS1:.c=.o))
-SRCS_DIR		= srcs/
-OBJS_DIR		= objs/
-LIBFT			= libft/libft.a
-MINILIBX		= $(MLX_DIR)/libmlx.a
+
+SRCS_DIR		= ./srcs/
+OBJS_DIR		= ./objs/
+LIBFT_DIR		= ./libft/
+INCLUDES_DIR	= ./includes/
+
+LIBFT			= $(LIBFT_DIR)libft.a
+MINILIBX		= $(MLX_DIR)libmlx.a
+HEADER			= $(INCLUDES_DIR)fdf.h
+
 FLAGS			= -Wall -Wextra -Werror -O2 -g
+CC				= clang
 
 ifeq ($(OPE_SYS), Linux)
-	MLX_DIR		= minilibx_x11
-	INCLUDES	= -I includes -I libft -I $(MLX_DIR) -I /usr/include
+	MLX_DIR		= ./minilibx_x11/
+	INCLUDES	= $(addprefix -I, $(INCLUDES_DIR) $(LIBFT_DIR) $(MLX_DIR) /usr/include)
 	FRAMEWORK	= -L$(MLX_DIR) -lmlx -L/usr/lib -lXext -lX11 -lm
 else
-	MLX_DIR		= minilibx
-	INCLUDES	= -I includes -I libft -I $(MLX_DIR)
+	MLX_DIR		= ./minilibx/
+	INCLUDES	= $(addprefix -I, $(INCLUDES_DIR) $(LIBFT_DIR) $(MLX_DIR))
 	FRAMEWORK	= -framework OpenGL -framework Appkit
 endif
 
@@ -61,58 +77,67 @@ _CUT		= "\033[k"
 ##   TARGETS    ##
 ##################
 
-.PHONY: all title libft minilibx create_dir clean fclean re norme
+.PHONY: all launch clean fclean re norme title
+.SILENT:
 
-all: $(NAME)
+all: launch
 
-create_dir:
-	@./.check_dir.sh $(OBJS_DIR)
+launch: title
+	$(MAKE) $(LIBFT)
+	$(MAKE) $(MINILIBX)
+	echo $(_CLEAR)$(_YELLOW)"building - "$(_GREEN)$(NAME)$(_END)
+	$(MAKE) $(NAME)
+	echo $(_GREEN)"\nDone."$(_END)$(_SHOW_CURS)
 
-libft: title
-	@make -sC libft
+$(OBJS_DIR):
+	mkdir $@
 
-minilibx: libft
-	@make -sC $(MLX_DIR) 2>/dev/null
+$(LIBFT): FORCE
+	$(MAKE) -sC libft
+	echo
 
-$(NAME): minilibx create_dir $(OBJS)
-	@gcc $(FLAGS) $(OBJS) $(LIBFT) $(FRAMEWORK) $(MINILIBX) -o $(NAME)
-	@echo $(_CLEAR)$(_YELLOW)"building - "$(_GREEN)$(NAME)$(_END)
-	@echo $(_GREEN)"Done."$(_END)$(_SHOW_CURS)
+$(MINILIBX): FORCE
+	$(MAKE) -sC $(MLX_DIR) 2>/dev/null
 
+FORCE:
 
-$(OBJS_DIR)%.o: $(SRCS_DIR)%.c
-	@gcc $(FLAGS) $(INCLUDES) -c $^ -o $@
+$(NAME): $(OBJS_DIR) $(OBJS)
+	$(CC) $(FLAGS) $(OBJS) $(LIBFT) $(FRAMEWORK) $(MINILIBX) -o $(NAME)
+
+$(OBJS): $(OBJS_DIR)%.o: $(SRCS_DIR)%.c $(HEADER)
+	$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
+	printf $<
 
 clean:
-	@make -sC libft clean
-	@make -sC $(MLX_DIR) clean
-	@/bin/rm -f $(OBJS)
+	$(MAKE) -sC libft clean
+	$(MAKE) -sC $(MLX_DIR) clean
+	$(RM) -r $(OBJS_DIR)
 
 fclean: clean
-	@make -sC libft fclean
-	@/bin/rm -f $(NAME)
+	$(MAKE) -sC libft fclean
+	$(RM) $(NAME)
 
 re:
-	@$(MAKE) -s fclean
-	@$(MAKE) -s
+	$(MAKE) -s fclean
+	$(MAKE) -s
 
 norme:
-	@norminette srcs/*.c includes/*.h
-	@make -C libft norme
+	norminette srcs/*.c includes/*.h
+	$(MAKE) -C libft norme
 
 title:
-	@echo $(_RED)
-	@echo "◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆"
-	@echo
-	@echo "                           :::::::::: :::::::::  ::::::::::                    "
-	@echo "                          :+:        :+:    :+: :+:                            "
-	@echo "                         +:+        +:+    +:+ +:+                             "
-	@echo "                        :#::+::#   +#+    +:+ :#::+::#                         "
-	@echo "                       +#+        +#+    +#+ +#+                               "
-	@echo "                      #+#        #+#    #+# #+#                                "
-	@echo "                     ###        #########  ###                                 "
-	@echo
-	@echo "◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆"
-	@printf $(_YELLOW)
-	@echo "                                                                2018 © lguiller"
-	@echo $(_END)
+	echo $(_RED)
+	echo "◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆"
+	echo
+	echo "                           :::::::::: :::::::::  ::::::::::                    "
+	echo "                          :+:        :+:    :+: :+:                            "
+	echo "                         +:+        +:+    +:+ +:+                             "
+	echo "                        :#::+::#   +#+    +:+ :#::+::#                         "
+	echo "                       +#+        +#+    +#+ +#+                               "
+	echo "                      #+#        #+#    #+# #+#                                "
+	echo "                     ###        #########  ###                                 "
+	echo
+	echo "◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆"
+	printf $(_YELLOW)
+	echo "                                                                2018 © lguiller"
+	echo $(_END)
